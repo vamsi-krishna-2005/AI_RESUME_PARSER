@@ -2,3 +2,4 @@ flask
 spacy
 PyPDF2
 gunicorn
+google
