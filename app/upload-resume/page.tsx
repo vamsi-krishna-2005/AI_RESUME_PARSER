@@ -120,7 +120,7 @@ export default function UploadResume() {
       setJobSuggestions([]); // clear for now
 
       // Step 2: Generate summary and job suggestions using Gemini
-      const summaryRes = await fetch(`${process.env.NEXT_PUBLIC_SUMMARY_URL}/generate-summary`, {
+      const summaryRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/parse/generate-summary`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: parsedText }),
