@@ -91,7 +91,7 @@ export default function UploadResume() {
       formData.append('resume', file);
 
       // Step 1: Parse the resume
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/parse-resume`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/parse/parse-resume`, {
         method: 'POST',
         body: formData,
       });
