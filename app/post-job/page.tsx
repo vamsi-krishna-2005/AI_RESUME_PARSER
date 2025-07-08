@@ -74,14 +74,14 @@ export default function PostJob() {
     const userId = sender;
 
     // 3. Log the payment
-    await axios.post('http://localhost:5000/api/log-payment/log-payment', {
+    await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/log-payment/log-payment`, {
       userId,
       txnHash,
     });
 
     // 4. Create the job post
     const token = authService.getAccessToken();
-    const response = await axios.post('http://localhost:5000/api/jobs', {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs`, {
       ...jobData,
       txnHash,
     }, {

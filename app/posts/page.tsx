@@ -146,7 +146,7 @@ export default function Posts() {
       // Try to save to backend if authenticated
       if (authService.isAuthenticated()) {
         try {
-          await authService.fetchWithAuth('http://localhost:5000/api/posts', {
+          await authService.fetchWithAuth(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/posts`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

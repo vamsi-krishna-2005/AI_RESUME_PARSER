@@ -62,7 +62,7 @@ class AuthService {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/refresh', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ class AuthService {
     const refreshToken = this.getRefreshToken();
     if (refreshToken) {
       try {
-        await fetch('http://localhost:5000/api/auth/logout', {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/logout`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

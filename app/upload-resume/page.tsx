@@ -91,7 +91,7 @@ export default function UploadResume() {
       formData.append('resume', file);
 
       // Step 1: Parse the resume
-      const res = await fetch('http://localhost:5000/api/parse-resume', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/parse-resume`, {
         method: 'POST',
         body: formData,
       });
@@ -120,14 +120,10 @@ export default function UploadResume() {
       setJobSuggestions([]); // clear for now
 
       // Step 2: Generate summary and job suggestions using Gemini
-      const summaryRes = await fetch('http://localhost:5001/generate-summary', {
+      const summaryRes = await fetch(`${process.env.NEXT_PUBLIC_SUMMARY_URL}/generate-summary`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          skills: data.skills,
-          experience: data.experience,
-          education: data.education,
-        }),
+        body: JSON.stringify({ text: parsedText }),
       });
       const summaryData = await summaryRes.json();
 
