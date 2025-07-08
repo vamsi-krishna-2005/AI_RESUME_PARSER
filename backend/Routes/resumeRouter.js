@@ -15,7 +15,7 @@ router.post('/parse-resume', upload.single('resume'), async (req, res) => {
   formData.append('resume', Buffer.from(req.file.buffer), req.file.originalname);
 
   try {
-    const flaskRes = await axios.post('http://localhost:5001/parse', formData, {
+    const flaskRes = await axios.post('{process.env.RESUME_PARSER}', formData, {
       headers: formData.getHeaders(),
       maxContentLength: Infinity,
       maxBodyLength: Infinity,
