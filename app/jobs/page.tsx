@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import Link from 'next/link';
@@ -82,7 +83,7 @@ const defaultJobs = [
   }
 ];
 
-export default function Jobs() {
+function JobsContent() {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
@@ -350,5 +351,13 @@ export default function Jobs() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Jobs() {
+  return (
+    <Suspense fallback={<div>Loading jobs...</div>}>
+      <JobsContent />
+    </Suspense>
   );
 }
