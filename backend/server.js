@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import authRoutes from './Routes/auth.js';
 import jobRoutes from './Routes/job.js';
-import postRoutes from './routes/postRouter.js';
+import postRoutes from './Routes/postRouter.js';
 import resumeRouter from './Routes/resumeRouter.js';
 import PaymentRouter from './Routes/payment.js';
 

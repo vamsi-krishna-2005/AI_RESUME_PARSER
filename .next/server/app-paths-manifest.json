@@ -1,8 +1,1 @@
-{
-  "/upload-resume/page": "app/upload-resume/page.js",
-  "/page": "app/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/signup/page": "app/signup/page.js",
-  "/post-job/page": "app/post-job/page.js",
-  "/jobs/page": "app/jobs/page.js"
-}
+{}
