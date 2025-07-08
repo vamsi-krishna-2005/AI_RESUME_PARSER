@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/parse-resume', upload.single('resume'), async (req, res) => {
   if (!req.file) return res.status(400).json({ msg: 'No file uploaded' });
-
+  console.log('📄 Received file:', req.file.originalname);
   // Forward the PDF file to Python microservice
   const formData = new FormData();
   formData.append('resume', Buffer.from(req.file.buffer), req.file.originalname);
@@ -20,6 +20,7 @@ router.post('/parse-resume', upload.single('resume'), async (req, res) => {
       maxContentLength: Infinity,
       maxBodyLength: Infinity,
     });
+    console.log('✅ Flask returned:', flaskRes.data);
     res.json(flaskRes.data);
   } catch (err) {
     if (err.response && err.response.data && err.response.data.error) {
