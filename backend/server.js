@@ -18,7 +18,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/posts', postRoutes);
-app.use('/api', resumeRouter);
+app.use('/api/parse', resumeRouter);
 app.use('/api/log-payment', PaymentRouter);
 // You can add job/post routes here as needed
 
