@@ -9,21 +9,6 @@ interface AuthModalProps {
 
 import { useEffect } from 'react';
 
-useEffect(() => {
-  if (!isOpen) {
-    setForm({
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    });
-    setError('');
-    setLoading(false);
-    setIsLogin(true); // Optional: reset to login tab
-  }
-}, [isOpen]);
-
-
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
@@ -36,7 +21,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
-
+  useEffect(() => {
+  if (!isOpen) {
+    setForm({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    });
+    setError('');
+    setLoading(false);
+    setIsLogin(true); // Optional: reset to login tab
+  }
+}, [isOpen]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
