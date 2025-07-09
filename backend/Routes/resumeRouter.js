@@ -11,7 +11,11 @@ router.post('/parse-resume', upload.single('resume'), async (req, res) => {
   console.log('📄 Received file:', req.file.originalname);
 
   const formData = new FormData();
-  formData.append('resume', Buffer.from(req.file.buffer), req.file.originalname);
+  formData.append('resume', req.file.buffer, {
+  filename: req.file.originalname,
+  contentType: req.file.mimetype,
+});
+
 
   try {
     const flaskRes = await axios.post(
