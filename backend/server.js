@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 connectDB();
 
-const allowedOrigins = ['https://ai-resume-parser-*'];
+const allowedOriginsRegex = /^https:\/\/ai-resume-parser-[\w\-]+\.vercel\.app$/;
 
 app.use(cors({
   origin: function (origin, callback) {
