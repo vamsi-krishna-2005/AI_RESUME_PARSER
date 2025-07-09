@@ -14,7 +14,7 @@ connectDB();
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://ai-resume-parser-okuw72jvy-vamsis-projects-467aa190.vercel.app',
+  'https://ai-resume-parser-m8l9qdvj5-vamsis-projects-467aa190.vercel.app',
   '*',
 ];
 
