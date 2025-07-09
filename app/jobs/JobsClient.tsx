@@ -173,8 +173,39 @@ export default function JobsClient() {
         {filteredJobs.length === 0 ? (
           <div className="text-center text-gray-500 py-12">No jobs found.</div>
         ) : (
-          // ... render jobs list as before ...
-          <div>{/* Jobs list rendering code here */}</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredJobs.map((job) => (
+              <div key={job._id || job.id} className="bg-white rounded-xl shadow-md p-6 flex flex-col">
+                <div className="flex items-center mb-4">
+                  {job.logo && (
+                    <img src={job.logo} alt={job.company} className="w-12 h-12 rounded-full mr-4 object-cover" />
+                  )}
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">{job.title}</h3>
+                    <div className="text-gray-600 text-sm">{job.company}</div>
+                  </div>
+                </div>
+                <div className="text-gray-700 mb-2">{job.location || 'Remote'}</div>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {Array.isArray(job.skills)
+                    ? job.skills.map((skill: string, idx: number) => (
+                        <span key={idx} className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium">
+                          {skill}
+                        </span>
+                      ))
+                    : null}
+                </div>
+                <div className="text-gray-500 text-xs mb-2">{job.type} &bull; {job.salary}</div>
+                <div className="flex-1 text-gray-600 text-sm mb-4 line-clamp-3">{job.description || job.posted}</div>
+                <div className="flex items-center justify-between mt-auto">
+                  <span className="text-xs text-gray-400">{job.posted || new Date(job.createdAt).toLocaleDateString()}</span>
+                  <Link href={"/jobs/" + (job._id || job.id)} className="text-blue-600 hover:underline text-sm font-medium">
+                    View Details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
