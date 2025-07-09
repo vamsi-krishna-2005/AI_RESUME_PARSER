@@ -100,8 +100,17 @@ export default function JobsClient() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs`);
         if (!res.ok) throw new Error('Failed to fetch jobs');
-        const data = await res.json();
-        setJobs(data);
+        const backendJobs = await res.json();
+        // Merge backend jobs and demo jobs, avoiding duplicates by title+company
+        const mergedJobs = [
+          ...backendJobs,
+          ...defaultJobs.filter(demoJob =>
+            !backendJobs.some(
+              (job: any) => job.title === demoJob.title && job.company === demoJob.company
+            )
+          )
+        ];
+        setJobs(mergedJobs);
       } catch (err) {
         setError('Could not fetch jobs from server. Showing sample jobs.');
         setJobs(defaultJobs);
