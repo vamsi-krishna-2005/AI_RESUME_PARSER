@@ -12,20 +12,22 @@ dotenv.config();
 const app = express();
 connectDB();
 
-const allowedOrigins = /^https:\/\/ai-resume-parser-[\w\-]+\.vercel\.app$/;
+const allowedOriginRegex = /^https:\/\/ai-resume-parser-[\w\-]+\.vercel\.app$/;
 
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOriginRegex.test(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS: ' + origin));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   console.log(`🔍 Request from: ${req.headers.origin}`);
