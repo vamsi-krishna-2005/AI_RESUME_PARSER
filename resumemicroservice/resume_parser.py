@@ -6,9 +6,12 @@ from collections import defaultdict
 import google.generativeai as genai
 from flask_cors import CORS
 import json
+import io
 
 app = Flask(__name__)
-CORS(app, origins=['https://ai-resume-parser-m8l9qdvj5-vamsis-projects-467aa190.vercel.app'])
+CORS(app, origins=[
+    r"https://ai-resume-parser-[\w\-]+\.vercel\.app"
+])
 
 # Load spaCy model
 nlp = spacy.load("en_core_web_sm")
@@ -59,13 +62,16 @@ def parse_resume():
     if 'resume' not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
 
-    file = request.files['resume']
-    print(f"✅ Resume received: {file.filename}")
+    raw_file = request.files['resume']
+    print(f"✅ Resume received: {raw_file.filename}")
 
     try:
-        pdf_reader = PyPDF2.PdfReader(file)
+        # Wrap file in BytesIO for PyPDF2
+        file_stream = io.BytesIO(raw_file.read())
+        pdf_reader = PyPDF2.PdfReader(file_stream)
         text = ''.join([page.extract_text() or '' for page in pdf_reader.pages])
     except Exception as e:
+        print(f"❌ PDF parsing error: {str(e)}")
         return jsonify({"error": f"Failed to read PDF: {str(e)}"}), 400
 
     stop_keywords = ['education', 'experience', 'skills', 'projects', 'certifications', 'summary', 'objective', 'work history', 'employment', 'contact', 'profile']
