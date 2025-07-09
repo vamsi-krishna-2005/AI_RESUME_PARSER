@@ -12,11 +12,7 @@ dotenv.config();
 const app = express();
 connectDB();
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://ai-resume-parser-m8l9qdvj5-vamsis-projects-467aa190.vercel.app',
-  '*',
-];
+const allowedOrigins = ['*'];
 
 app.use(cors({
   origin: function (origin, callback) {
