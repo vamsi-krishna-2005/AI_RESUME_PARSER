@@ -29,7 +29,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
     setError('');
     setLoading(true);
     try {
-      const endpoint = isLogin ? 'http://localhost:5000/api/auth/login' : 'http://localhost:5000/api/auth/register';
+      console.log('Backend URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
+      const endpoint = isLogin ? '${process.env.NEXT_PUBLIC_BACKEND_URL}api/auth/login' : '${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register';
       const payload = isLogin
         ? { email: form.email, password: form.password }
         : { name: form.name, email: form.email, password: form.password };
