@@ -8,7 +8,7 @@ from flask_cors import CORS
 import json
 
 app = Flask(__name__)
-CORS(app, origins=['https://ai-resume-parser-m8l9qdvj5-vamsis-projects-467aa190.vercel.app'])
+CORS(app, origins=['*'])
 
 # Load spaCy model
 nlp = spacy.load("en_core_web_sm")
