@@ -7,6 +7,23 @@ interface AuthModalProps {
   onAuthSuccess: (user: any, accessToken: string, refreshToken: string) => void;
 }
 
+import { useEffect } from 'react';
+
+useEffect(() => {
+  if (!isOpen) {
+    setForm({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    });
+    setError('');
+    setLoading(false);
+    setIsLogin(true); // Optional: reset to login tab
+  }
+}, [isOpen]);
+
+
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
