@@ -30,7 +30,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
     setLoading(true);
     try {
       console.log('Backend URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
-      const endpoint = isLogin ? '${process.env.NEXT_PUBLIC_BACKEND_URL}api/auth/login' : '${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register';
+      const endpoint = isLogin 
+  ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login` 
+  : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`;
+
       const payload = isLogin
         ? { email: form.email, password: form.password }
         : { name: form.name, email: form.email, password: form.password };
