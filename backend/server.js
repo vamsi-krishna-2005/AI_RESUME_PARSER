@@ -12,13 +12,22 @@ dotenv.config();
 const app = express();
 connectDB();
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://ai-resume-parser-qclgh1wbf-vamsis-projects-467aa190.vercel.app'
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://ai-resume-parser-9fphxmqfr-vamsis-projects-467aa190.vercel.app', // replace with your real frontend URL
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use((req, res, next) => {
