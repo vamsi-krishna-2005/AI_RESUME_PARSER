@@ -89,65 +89,38 @@ export default function JobsClient() {
   const [jobTypeFilter, setJobTypeFilter] = useState('');
   const [salaryFilter, setSalaryFilter] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [jobs, setJobs] = useState(defaultJobs);
+  const [jobs, setJobs] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Load jobs from localStorage on component mount
   useEffect(() => {
-    const savedJobs = localStorage.getItem('careermatch_jobs');
-    if (savedJobs) {
+    async function fetchJobs() {
+      setIsLoading(true);
+      setError('');
       try {
-        const parsedJobs = JSON.parse(savedJobs);
-        setJobs(parsedJobs);
-      } catch (error) {
-        console.error('Error parsing saved jobs:', error);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs`);
+        if (!res.ok) throw new Error('Failed to fetch jobs');
+        const data = await res.json();
+        setJobs(data);
+      } catch (err) {
+        setError('Could not fetch jobs from server. Showing sample jobs.');
         setJobs(defaultJobs);
+      } finally {
+        setIsLoading(false);
       }
-    } else {
-      // Initialize localStorage with default jobs
-      localStorage.setItem('careermatch_jobs', JSON.stringify(defaultJobs));
     }
-    setIsLoading(false);
+    fetchJobs();
   }, []);
-
-  // Save jobs to localStorage whenever jobs state changes
-  useEffect(() => {
-    if (!isLoading) {
-      localStorage.setItem('careermatch_jobs', JSON.stringify(jobs));
-    }
-  }, [jobs, isLoading]);
-
-  // Check for newly posted job from URL params
-  useEffect(() => {
-    const newJobData = searchParams.get('newJob');
-    if (newJobData && !isLoading) {
-      try {
-        const newJob = JSON.parse(decodeURIComponent(newJobData));
-        // Check if job already exists to avoid duplicates
-        const jobExists = jobs.some(job => job.id === newJob.id);
-        if (!jobExists) {
-          // Add the new job at the beginning of the list
-          setJobs(prevJobs => [newJob, ...prevJobs]);
-        }
-        // Clear the URL param after adding the job
-        const url = new URL(window.location.href);
-        url.searchParams.delete('newJob');
-        window.history.replaceState({}, '', url);
-      } catch (error) {
-        console.error('Error parsing new job data:', error);
-      }
-    }
-  }, [searchParams, jobs, isLoading]);
 
   const filteredJobs = jobs.filter(job => {
     return (
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+      job.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (Array.isArray(job.skills) && job.skills.some((skill: string) => skill.toLowerCase().includes(searchTerm.toLowerCase())))
     ) &&
-    (locationFilter === '' || job.location.toLowerCase().includes(locationFilter.toLowerCase())) &&
+    (locationFilter === '' || job.location?.toLowerCase().includes(locationFilter.toLowerCase())) &&
     (jobTypeFilter === '' || job.type === jobTypeFilter) &&
-    (salaryFilter === '' || job.salary.includes(salaryFilter));
+    (salaryFilter === '' || (job.salary && job.salary.includes(salaryFilter)));
   });
 
   if (isLoading) {
@@ -194,7 +167,15 @@ export default function JobsClient() {
             {/* ... rest of the UI ... */}
           </div>
         </div>
-        {/* ... rest of the jobs UI ... */}
+        {error && (
+          <div className="mb-4 text-red-500 text-center">{error}</div>
+        )}
+        {filteredJobs.length === 0 ? (
+          <div className="text-center text-gray-500 py-12">No jobs found.</div>
+        ) : (
+          // ... render jobs list as before ...
+          <div>{/* Jobs list rendering code here */}</div>
+        )}
       </div>
     </div>
   );
