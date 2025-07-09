@@ -20,20 +20,21 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  if (!isOpen) return null;
   useEffect(() => {
-  if (!isOpen) {
-    setForm({
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    });
-    setError('');
-    setLoading(false);
-    setIsLogin(true); // Optional: reset to login tab
-  }
-}, [isOpen]);
+    if (!isOpen) {
+      setForm({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
+      setError('');
+      setLoading(false);
+      setIsLogin(true); // Optional: reset to login tab
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
