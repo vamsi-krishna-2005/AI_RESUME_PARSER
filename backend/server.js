@@ -13,9 +13,19 @@ const app = express();
 connectDB();
 
 app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST'],
+  origin: [
+    'http://localhost:3000',
+    'https://ai-resume-parser-9fphxmqfr-vamsis-projects-467aa190.vercel.app', // replace with your real frontend URL
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
+
+app.use((req, res, next) => {
+  console.log(`🔍 Request from: ${req.headers.origin}`);
+  next();
+});
+
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
