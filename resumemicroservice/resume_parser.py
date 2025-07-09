@@ -8,7 +8,9 @@ from flask_cors import CORS
 import json
 
 app = Flask(__name__)
-CORS(app, origins=['*'])
+CORS(app, origins=[
+    r"https://ai-resume-parser-[\w\-]+\.vercel\.app"
+])
 
 # Load spaCy model
 nlp = spacy.load("en_core_web_sm")
