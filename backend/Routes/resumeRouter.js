@@ -25,7 +25,7 @@ router.post('/parse-resume', upload.single('resume'), async (req, res) => {
         headers: formData.getHeaders(),
         maxContentLength: Infinity,
         maxBodyLength: Infinity,
-        timeout: 60000,
+        timeout: 120000,
       }
     );
 
