@@ -296,14 +296,8 @@ const summaryData = await summaryRes.json();
                         Browse Files
                       </button>
                     )}
-                    {fileName && !isUploading && (
+                    {fileName && !isUploading && !analysis && (
                       <div className="flex justify-center gap-4 mt-4">
-                        <button
-                          onClick={handleBrowseClick}
-                          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                        >
-                          Browse Files
-                        </button>
                         <button
                           onClick={handleDeleteResume}
                           className="px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors duration-200"
