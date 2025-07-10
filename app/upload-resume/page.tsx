@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Header from '../../components/Header';
 import { useRouter } from 'next/navigation';
 
@@ -36,6 +36,27 @@ export default function UploadResume() {
   const [skills, setSkills] = useState<string[]>([]);
   const [jobSuggestions, setJobSuggestions] = useState<string[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Progress bar animation
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isUploading) {
+      setUploadProgress(0);
+      let progress = 0;
+      const target = Math.floor(Math.random() * 30) + 60; // 60-90%
+      interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 5) + 1; // increment by 1-5%
+        if (progress >= target) {
+          clearInterval(interval);
+        } else {
+          setUploadProgress(progress);
+        }
+      }, 100);
+    } else if (!isUploading && uploadProgress < 100 && selectedFile) {
+      setUploadProgress(100);
+    }
+    return () => clearInterval(interval);
+  }, [isUploading, selectedFile]);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -190,6 +211,19 @@ const summaryData = await summaryRes.json();
     setParsedText('');
     setFileError('');
     setSelectedFile(null);
+    localStorage.removeItem('resume_analysis');
+    localStorage.removeItem('uploaded_resume');
+  };
+
+  const handleDeleteResume = () => {
+    setAnalysis(null);
+    setFileName('');
+    setSkills([]);
+    setJobSuggestions([]);
+    setParsedText('');
+    setFileError('');
+    setSelectedFile(null);
+    setUploadProgress(0);
     localStorage.removeItem('resume_analysis');
     localStorage.removeItem('uploaded_resume');
   };
@@ -387,6 +421,12 @@ const summaryData = await summaryRes.json();
                 className="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
               >
                 Continue to Dashboard
+              </button>
+              <button
+                onClick={handleDeleteResume}
+                className="px-8 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors duration-200"
+              >
+                Delete Resume
               </button>
             </div>
           </div>
